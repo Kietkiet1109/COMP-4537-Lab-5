@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Lab 1</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="lang/messages/en/en.js"></script>
+    <title>Lab 5 Server 1</title>
 </head>
 <body>
-    <h1>Lab 1: JSON, Object Constructor, localStorage</h1>
-    <h1>Kiet Ngo</h1>
-    <div class="landing-container">
-        <button id= "reader-button" onclick="location.href='reader.html'">Reader</button>
-        <button id= "writer-button" onclick="location.href='writer.html'">Writer</button>
+    <div class="container mt-5">
+        <h2 class="mb-4">Lab 5 Server 1</h2>
+        <div class="form-group">
+            <textarea class="form-control" id="sql-query" rows="5" cols="50" placeholder=""></textarea>
+        </div>
+        <button class="btn btn-primary" id="insert-button" onclick="insert()">Insert</button>
+        <button class="btn btn-primary" id="execute-button" onclick="execute()">Execute</button>
+        <p id="result"></p>    
     </div>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
