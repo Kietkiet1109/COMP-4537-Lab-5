@@ -8,7 +8,7 @@ async function insert() {
     result.textContent = ""
 
     try {
-        const response = await axios.post('https://goldfish-app-35546.ondigitalocean.app/insert/', patients);
+        const response = await axios.post('https://goldfish-app-35546.ondigitalocean.app/insert', patients);
         result.innerHTML = `${messages.serverResponse} ${response.data.message}`;
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
