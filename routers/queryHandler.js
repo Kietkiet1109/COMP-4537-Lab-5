@@ -18,8 +18,9 @@ function isValidQuery(query) {
  */
 function handleGetRequest(req, res) {
     const parsedUrl = url.parse(req.url, true);
-    const query = decodeURIComponent(parsedUrl.pathname.replace('api/v1/sql/', '')).trim();
-
+    const urlParts = parsedUrl.split('/api/v1/sql/');
+    const query = decodeURIComponent(urlParts[1]);
+    
     // Only allow SELECT queries
     if (!query.toUpperCase().startsWith('SELECT')) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
