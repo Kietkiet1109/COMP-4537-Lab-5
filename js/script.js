@@ -1,37 +1,53 @@
 const sqlQuery = document.getElementById('sql-query');
 const result = document.getElementById('result');
 
-// Function to insert multiple patients
-// ChatGPT use as a references of this function
+/**
+ * Function to insert multiple patients
+ */
 async function insert() {
-    const patients = messages.patients;
-    result.textContent = ""
+    const patients = messages.patients; // Ensure this is a valid object
+    result.textContent = "";
 
     try {
-        const response = await axios.post('https://goldfish-app-35546.ondigitalocean.app/insert', patients);
-        result.innerHTML = `${messages.serverResponse} ${response.data.message}`;
+        const response = await axios.post('https://goldfish-app-35546.ondigitalocean.app/api/v1/insert', {
+            query: patients
+        });
+
+        // Handle JSON response and display formatted output
+        result.innerHTML = `<strong>${messages.serverResponse}:</strong> <pre>${JSON.stringify(response.data, null, 2)}</pre>`;
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
-        result.innerHTML = messages.insertError;
+        result.innerHTML = `<strong>${messages.insertError}:</strong> <pre>${JSON.stringify(error.response?.data || error.message, null, 2)}</pre>`;
     }
 }
 
-// Function to execute SELECT or INSERT queries from the textarea
-// ChatGPT use as a references of this function
+/**
+ * Function to execute SELECT queries from the textarea
+ */
 async function execute() {
     const query = sqlQuery.value.trim();
 
-    if (query) {
-        try {
-            const response = await axios.post('https://goldfish-app-35546.ondigitalocean.app/sql/', {
-                query
-            });
-            result.innerHTML = `${messages.serverResponse} ${JSON.stringify(response.data)}`;
-        } catch (error) {
-            console.error('Error:', error.response ? error.response.data : error.message);
-            result.innerHTML = messages.executeError;
+    if (!query) {
+        result.innerHTML = `<strong>${messages.SQLEmpty}</strong>`;
+        return;
+    }
+
+    try {
+        // Ensure only SELECT queries are allowed
+        if (!query.toUpperCase().startsWith('SELECT')) {
+            result.innerHTML = `<strong>${messages.error}: Only SELECT queries are allowed!</strong>`;
+            return;
         }
-    } else {
-        result.innerHTML = messages.SQLEmpty;
+
+        // API URL for GET request to fetch data
+        const apiUrl = 'https://goldfish-app-35546.ondigitalocean.app/api/v1/sql/' + encodeURIComponent(query);
+
+        const response = await axios.get(apiUrl);
+
+        // Display the response data in formatted JSON
+        result.innerHTML = `<strong>${messages.serverResponse}:</strong> <pre>${JSON.stringify(response.data, null, 2)}</pre>`;
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        result.innerHTML = `<strong>${messages.executeError}:</strong> <pre>${JSON.stringify(error.response?.data || error.message, null, 2)}</pre>`;
     }
 }
