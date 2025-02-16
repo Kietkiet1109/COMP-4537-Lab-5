@@ -58,18 +58,18 @@ function handleButtonRequest(req, res) {
     const parsedUrl = url.parse(req.url, true);
     let body = '';
 
-    // Create the database if it doesn’t exist
-    connection.query(messages.database.createDatabase, (err) => {
-        if (err) throw err;
-        console.log(messages.database.databaseReady);
-    });
-
     // Gather data from the request
     req.on('data', chunk => {
         body += chunk.toString();
     });
 
     req.on('end', () => {
+        // Create the database if it doesn’t exist
+        connection.query(messages.database.createDatabase, (err) => {
+            if (err) throw err;
+            console.log(messages.database.databaseReady);
+        });
+        
         let requestData;
         try {
             // Parse the incoming JSON data
