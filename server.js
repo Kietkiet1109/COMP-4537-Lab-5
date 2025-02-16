@@ -17,6 +17,11 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
+    if (req.method === "OPTIONS") {
+        res.writeHead(204);
+        return res.end();
+    }
+
     // Execute button
     if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
         const parsedUrl = url.parse(req.url, true);
