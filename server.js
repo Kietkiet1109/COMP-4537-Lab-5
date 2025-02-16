@@ -4,10 +4,6 @@ const { handleGetRequest, handlePostRequest, handleButtonRequest } = require('./
 const initDB = require('./db/init');
 const messages = require('./lang/messages/en/en');
 
-const express = require('express');
-const cors = require('cors');
-const app = express();
-
 // Initialize database and table on startup
 initDB;
 
