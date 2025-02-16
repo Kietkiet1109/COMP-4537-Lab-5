@@ -8,11 +8,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-// Enable CORS for your Netlify frontend
-app.use(cors({
-    origin: 'https://comp4537labs5.netlify.app',
-}));
-
 // Initialize database and table on startup
 initDB;
 
@@ -22,7 +17,7 @@ const server = http.createServer((req, res) => {
 
     // Set CORS headers
     if (req.method === 'OPTIONS') {
-        app.options('*', cors());
+        app.use(cors());
         res.writeHead(204);
         return res.end();
     }
