@@ -1,5 +1,5 @@
 const http = require('http');
-const { handleGetRequest, handlePostRequest } = require('./routes/queryHandler');
+const { handleGetRequest, handlePostRequest } = require('./routers/queryHandler');
 const initDB = require('./db/init');
 
 // Initialize database and table on startup
