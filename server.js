@@ -4,6 +4,17 @@ const { handleGetRequest, handlePostRequest, handleButtonRequest } = require('./
 const initDB = require('./db/init');
 const messages = require('./lang/messages/en/en');
 
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+// Enable CORS for your Netlify frontend
+app.use(cors({
+    origin: 'https://comp4537labs5.netlify.app',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+}));
+
 // Initialize database and table on startup
 initDB;
 
@@ -11,14 +22,14 @@ const PORT = 8080;
 
 const server = http.createServer((req, res) => {
 
-    // Set CORS headers
-    if (req.method === 'OPTIONS') {
-        res.setHeader('Access-Control-Allow-Origin', 'https://comp4537labs5.netlify.app');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-        res.writeHead(204);
-        return res.end();
-    }
+    // // Set CORS headers
+    // if (req.method === 'OPTIONS') {
+    //     res.setHeader('Access-Control-Allow-Origin', 'https://comp4537labs5.netlify.app');
+    //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    //     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    //     res.writeHead(204);
+    //     return res.end();
+    // }
 
     // Execute button
     if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
