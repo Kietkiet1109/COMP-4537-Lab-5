@@ -1,11 +1,11 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-    socketPath: "/cloudsql/sharp-imprint-451101-e6:us-central1:comp4537labs5",
-    user: "root",
-    password: "kiet",
-    database: "sys",
-    port: 3306,
+    host: 'lab5-do-user-18795572-0.l.db.ondigitalocean.com',
+    user: "doadmin",
+    password: "AVNS_kNzd4GNmLiuIHPAcw9F",
+    database: "defaultdb",
+    port: 25060,
 });
 
 connection.connect(function(err) {
