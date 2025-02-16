@@ -12,10 +12,10 @@ const PORT = 8080;
 const server = http.createServer((req, res) => {
 
     // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'https://comp4537labs5.netlify.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); 
-
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
     // Execute button
     if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
         const parsedUrl = url.parse(req.url, true);
