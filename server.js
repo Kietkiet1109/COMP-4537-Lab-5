@@ -8,6 +8,21 @@ initDB;
 const PORT = 8080;
 
 const server = http.createServer((req, res) => {
+    if (req.method === 'OPTIONS') {
+        res.writeHead(204, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+        });
+        res.end();
+        return;
+    }
+
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); 
+    
     if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
         handleGetRequest(req, res);
     } else if (req.method === 'POST' && req.url === '/api/v1/insert') {
