@@ -5,12 +5,12 @@ const result = document.getElementById('result');
  * Function to insert multiple patients
  */
 async function insert() {
-    const patients = messages.patients; // Ensure this is a valid object
+    const patients = messages.patients;
     result.textContent = "";
 
     try {
         const response = await axios.post('https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/insert', {
-            query: patients
+            patients
         });
 
         // Handle JSON response and display formatted output
