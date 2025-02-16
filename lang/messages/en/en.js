@@ -1,5 +1,5 @@
 const messages = {
-    serverResponse: "Response from server: ",
+    serverResponse: "Response from server",
     SQLEmpty: "Empty SQL not allow",
     executeError: "Error executing SQL",
     insertError: "Error inserting patients",
