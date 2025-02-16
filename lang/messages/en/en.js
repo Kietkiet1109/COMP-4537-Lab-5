@@ -1,20 +1,34 @@
 module.exports = {
-    database: {
-        connectionSuccess: 'Connected to MySQL database.',
-        connectionError: 'Database connection failed:',
-        databaseReady: 'Database "lab5_db" is ready.',
-        tableReady: 'Table "patients" is ready.'
-    },
     server: {
-        start: `Tommy and Kiet's SQL Server running at http://localhost:`,
-        notFound: 'Endpoint not found'
+        invalidSQL: 'Forbidden query type detected',
+        invalidURL: 'Endpoint not found',
+        serverStart: `Tommy and Kiet's SQL Server running at http://localhost:`
     },
+
+    connection: {
+        connectError: 'Connection failed with error:', 
+        connectSuccess: 'Connected to MySQL database'
+    },
+
+    database: {
+        createDatabase: 'CREATE DATABASE IF NOT EXISTS lab5',
+        databaseReady: 'Database "lab5" is ready',
+        createTable: `
+                    CREATE TABLE IF NOT EXISTS patients (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(100) NOT NULL,
+                        dateOfBirth DATE NOT NULL
+                    ) ENGINE=InnoDB;
+                    `,
+        tableReady: 'Table "patients" is ready'
+    },
+
     query: {
-        invalidJSON: 'Invalid JSON format',
-        forbiddenQuery: 'Forbidden query type detected',
-        onlySelectAllowed: 'Only SELECT queries are allowed via GET',
-        onlyInsertAllowed: 'Only INSERT queries are allowed via POST',
+        getError: 'Get query failed',
+        insertError: 'Data inserted failed',
         insertSuccess: 'Data inserted successfully',
-        executionError: 'Error executing query'
+        invalidJSON: 'Invalid JSON format', 
+        noData: 'Patients data must be an array with at least one patient',
+        insertQuery: 'INSERT INTO patients (name, dateOfBirth) VALUES',
     }
 };

@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
 const dbConfig = require('./connection');
+const messages = require('../lang/messages/en/en');
 
 // Create connection without specifying the database
 const tempConnection = mysql.createConnection({
@@ -9,21 +10,15 @@ const tempConnection = mysql.createConnection({
 });
 
 // Create the database if it doesn’t exist
-tempConnection.query('CREATE DATABASE IF NOT EXISTS lab5_db', (err) => {
+tempConnection.query(messages.database.createDatabase, (err) => {
     if (err) throw err;
-    console.log('Database "lab5_db" is ready.');
+    console.log(messages.database.databaseReady);
 });
 
 // Use the actual database connection
-dbConfig.query(`
-    CREATE TABLE IF NOT EXISTS patients (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        birth_date DATE NOT NULL
-    ) ENGINE=InnoDB;
-`, (err) => {
+dbConfig.query(messages.database.createTable, (err) => {
     if (err) throw err;
-    console.log('Table "patients" is ready.');
+    console.log(messages.database.tableReady);
 });
 
 // Close temporary connection

@@ -1,45 +1,18 @@
-const connection = require('../db/connection');
 const url = require('url');
+const connection = require('../db/connection');
+const messages = require('../lang/messages/en/en');
 
 /**
- * Function to validate queries and block dangerous SQL commands
- * Only allows SELECT and INSERT queries
- * Use ChatGPT to generate a list of dangerous SQL commands
+ * Handles GET requests for SELECT SQL
+ * ChatGPT use as a reference of this function
  */
-function isValidQuery(query) {
-    const forbiddenCommands = ['UPDATE', 'DELETE', 'DROP', 'ALTER', 'TRUNCATE'];
-    const upperQuery = (query || '').toUpperCase();
-    
-    return forbiddenCommands.every(cmd => !upperQuery.startsWith(cmd));
-}
+function handleGetRequest(req, res, query) {
 
-/**
- * Handles GET requests for SELECT queries
- */
-function handleGetRequest(req, res) {
-    const parsedUrl = url.parse(req.url, true);
-    const urlParts = parsedUrl.split('/api/v1/sql/');
-    const query = decodeURIComponent(urlParts[1]);
-    
-    // Only allow SELECT queries
-    if (!query.toUpperCase().startsWith('SELECT')) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Only SELECT queries are allowed via GET' }));
-        return;
-    }
-
-    // Block dangerous SQL commands
-    if (!isValidQuery(query)) {
-        res.writeHead(403, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Forbidden query type detected' }));
-        return;
-    }
-
-    // Execute the query
+    // Execute the SELECT query
     connection.query(query, (err, results) => {
         if (err) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: err.message }));
+            res.end(JSON.stringify({ error: messages.query.getError }));
             return;
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -48,9 +21,28 @@ function handleGetRequest(req, res) {
 }
 
 /**
- * Handles POST requests for INSERT queries
+ * Handles POST requests for INSERT SQL
+ * ChatGPT use as a reference of this function
  */
-function handlePostRequest(req, res) {
+function handlePostRequest(req, res, query) {
+
+    // Execute the INSERT query
+    connection.query(query, (err, results) => {
+        if (err) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: messages.query.insertError }));
+            return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: messages.query.insertSuccess, results } ));
+    });
+}
+
+/**
+ * Handles POST requests for INSERT button
+ * ChatGPT use as a reference of this function
+ */
+function handleButtonRequest(req, res) {
     const parsedUrl = url.parse(req.url, true);
     let body = '';
 
@@ -62,10 +54,11 @@ function handlePostRequest(req, res) {
     req.on('end', () => {
         let requestData;
         try {
-            requestData = JSON.parse(body); // Parse the incoming JSON data
+            // Parse the incoming JSON data
+            requestData = JSON.parse(body); 
         } catch (error) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Invalid JSON' }));
+            res.end(JSON.stringify({ error: messages.query.invalidJSON }));
             return;
         }
 
@@ -73,7 +66,7 @@ function handlePostRequest(req, res) {
         const pathname = parsedUrl.pathname.replace(/\/$/, '');
         if (pathname !== '/api/v1/insert') {
             res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Endpoint not found' }));
+            res.end(JSON.stringify({ error: messages.server.invalidURL }));
             return;
         }
 
@@ -83,7 +76,7 @@ function handlePostRequest(req, res) {
         // Validate that patients is an array with at least one patient
         if (!Array.isArray(patients) || patients.length === 0) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Patients data must be an array with at least one patient' }));
+            res.end(JSON.stringify({ error: messages.query.noData }));
             return;
         }
 
@@ -96,26 +89,19 @@ function handlePostRequest(req, res) {
         }).join(', ');  // Join all the rows with commas
 
         // Construct the SQL query to insert multiple rows at once
-        const query = `INSERT INTO patients (name, birth_date) VALUES ${values}`;
-
-        // Block dangerous SQL commands (to prevent SQL injection)
-        if (!isValidQuery(query)) {
-            res.writeHead(403, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Forbidden query type detected' }));
-            return;
-        }
+        const query = `${messages.query.insertQuery} ${values}`;
 
         // Execute the query
         connection.query(query, (err, results) => {
             if (err) {
                 res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: err.message }));
+                res.end(JSON.stringify({ error: messages.query.insertError }));
                 return;
             }
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'Data inserted successfully', results }));
+            res.end(JSON.stringify({ message: messages.query.insertSuccess, results }));
         });
     });
 }
 
-module.exports = { handleGetRequest, handlePostRequest };
+module.exports = { handleGetRequest, handlePostRequest, handleButtonRequest };
