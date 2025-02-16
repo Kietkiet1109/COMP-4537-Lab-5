@@ -4,12 +4,12 @@ const result = document.getElementById('result');
 /**
  * Function to insert multiple patients
  */
-async function insert() {
+function insert() {
     const patients = messages.patients;
     result.textContent = "";
 
     try {
-        const response = await axios.post('https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/insert', {
+        const response = axios.post('https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/insert', {
             patients
         });
 
@@ -24,7 +24,7 @@ async function insert() {
 /**
  * Function to execute SELECT queries from the textarea
  */
-async function execute() {
+function execute() {
     const query = sqlQuery.value;
 
     if (!query) {
@@ -36,7 +36,7 @@ async function execute() {
         // API URL for GET request to fetch data
         const apiUrl = 'https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/sql/' + encodeURIComponent(query);
 
-        const response = await axios.get(apiUrl);
+        const response = axios.get(apiUrl);
 
         // Display the response data in formatted JSON
         result.innerHTML = `<strong>${messages.serverResponse}:</strong> <pre>${JSON.stringify(response.data, null, 2)}</pre>`;
