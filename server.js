@@ -17,7 +17,18 @@ const server = http.createServer((req, res) => {
 
     // Set CORS headers
     if (req.method === 'OPTIONS') {
-        app.use(cors());
+        const allowedOrigins = ["https://comp4537labs5.netlify.app/"];
+ 
+        // Enable CORS for specific origins
+        app.use(cors({
+            origin: function (origin, callback) {
+                if (!origin || allowedOrigins.includes(origin)) {
+                    callback(null, true);
+                } else {
+                    callback(new Error('Not allowed by CORS'));
+                }
+            }
+        }));
         res.writeHead(204);
         return res.end();
     }
