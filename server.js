@@ -23,7 +23,8 @@ const server = http.createServer((req, res) => {
     // Execute button
     if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
         const parsedUrl = url.parse(req.url, true);
-        const urlParts = parsedUrl.split('/api/v1/sql/');
+        const pathname = parsedUrl.pathname;
+        const urlParts = pathname.split('/api/v1/sql/');
         const query = decodeURIComponent(urlParts[1]);
 
         // Select through SQL
