@@ -8,9 +8,9 @@ initDB;
 const PORT = 8080;
 
 const server = http.createServer((req, res) => {
-    if (req.method === 'GET' && req.url.startsWith('/lab5/api/v1/sql/')) {
+    if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
         handleGetRequest(req, res);
-    } else if (req.method === 'POST' && req.url === '/lab5/api/v1/sql') {
+    } else if (req.method === 'POST' && req.url === '/api/v1/insert') {
         handlePostRequest(req, res);
     } else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -21,4 +21,3 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     console.log(`Tommy and Kiet SQL Server running at http://localhost:${PORT}/`);
 });
-

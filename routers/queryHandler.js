@@ -18,10 +18,10 @@ function isValidQuery(query) {
  */
 function handleGetRequest(req, res) {
     const parsedUrl = url.parse(req.url, true);
-    const query = decodeURIComponent(parsedUrl.pathname.replace('/lab5/api/v1/sql/', ''));
+    const query = decodeURIComponent(parsedUrl.pathname.replace('api/v1/sql/', '')).trim();
 
     // Only allow SELECT queries
-    if (!query.startsWith('SELECT')) {
+    if (!query.toUpperCase().startsWith('SELECT')) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Only SELECT queries are allowed via GET' }));
         return;
@@ -50,6 +50,7 @@ function handleGetRequest(req, res) {
  * Handles POST requests for INSERT queries
  */
 function handlePostRequest(req, res) {
+    const parsedUrl = url.parse(req.url, true);
     let body = '';
 
     req.on('data', chunk => {
@@ -65,11 +66,19 @@ function handlePostRequest(req, res) {
             res.end(JSON.stringify({ error: 'Invalid JSON' }));
             return;
         }
+        
+        const pathname = parsedUrl.pathname.replace(/\/$/, '');
 
+        if (pathname !== '/api/v1/insert') {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Endpoint not found' }));
+            return;
+        }
+        
         const { query } = requestData;
-
+        
         // Only allow INSERT queries
-        if (!query || !query.startsWith('INSERT')) {
+        if (!query || !query.toUpperCase().startsWith('INSERT')) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Only INSERT queries are allowed via POST' }));
             return;
