@@ -95,7 +95,7 @@ function handlePostRequest(req, res) {
         }).join(', ');  // Join all the rows with commas
 
         // Construct the SQL query to insert multiple rows at once
-        const query = `INSERT INTO patients (name, date_of_birth) VALUES ${values}`;
+        const query = `INSERT INTO patients (name, birth_date) VALUES ${values}`;
 
         // Block dangerous SQL commands (to prevent SQL injection)
         if (!isValidQuery(query)) {
