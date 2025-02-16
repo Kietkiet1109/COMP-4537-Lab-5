@@ -18,4 +18,3 @@ module.exports = {
         executionError: 'Error executing query'
     }
 };
-

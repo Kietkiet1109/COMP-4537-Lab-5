@@ -19,6 +19,6 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Tommy and Kiets SQL Server running at http://localhost:${PORT}/`);
+    console.log(`Tommy and Kiet SQL Server running at http://localhost:${PORT}/`);
 });
 
