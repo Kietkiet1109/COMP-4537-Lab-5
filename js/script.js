@@ -9,7 +9,7 @@ async function insert() {
     result.textContent = "";
 
     try {
-        const response = await axios.post('https://goldfish-app-35546.ondigitalocean.app/api/v1/insert', {
+        const response = await axios.post('https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/insert', {
             query: patients
         });
 
@@ -40,7 +40,7 @@ async function execute() {
         }
 
         // API URL for GET request to fetch data
-        const apiUrl = 'https://goldfish-app-35546.ondigitalocean.app/api/v1/sql/' + encodeURIComponent(query);
+        const apiUrl = 'https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/sql/' + encodeURIComponent(query);
 
         const response = await axios.get(apiUrl);
 
