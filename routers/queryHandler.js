@@ -8,6 +8,12 @@ const messages = require('../lang/messages/en/en');
  */
 function handleGetRequest(req, res, query) {
 
+    // Create the database if it doesn’t exist
+    connection.query(messages.database.createDatabase, (err) => {
+        if (err) throw err;
+        console.log(messages.database.databaseReady);
+    });
+    
     // Execute the SELECT query
     connection.query(query, (err, results) => {
         if (err) {
@@ -26,11 +32,17 @@ function handleGetRequest(req, res, query) {
  */
 function handlePostRequest(req, res, query) {
 
+    // Create the database if it doesn’t exist
+    connection.query(messages.database.createDatabase, (err) => {
+        if (err) throw err;
+        console.log(messages.database.databaseReady);
+    });
+    
     // Execute the INSERT query
     connection.query(query, (err, results) => {
         if (err) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: messages.query.insertError }));
+            res.end(JSON.stringify({ error: messages.query.postError }));
             return;
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -88,6 +100,12 @@ function handleButtonRequest(req, res) {
             return `(${name}, ${dateOfBirth})`;  // Format each patient as a row
         }).join(', ');  // Join all the rows with commas
 
+        // Create the database if it doesn’t exist
+        connection.query(messages.database.createDatabase, (err) => {
+            if (err) throw err;
+            console.log(messages.database.databaseReady);
+        });
+        
         // Construct the SQL query to insert multiple rows at once
         const query = `${messages.query.insertQuery} ${values}`;
 

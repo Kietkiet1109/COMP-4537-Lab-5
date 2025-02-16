@@ -14,7 +14,7 @@ module.exports = {
         createDatabase: 'CREATE DATABASE IF NOT EXISTS lab5',
         databaseReady: 'Database "lab5" is ready',
         createTable: `
-                    CREATE TABLE IF NOT EXISTS patients (
+                    CREATE TABLE IF NOT EXISTS Patients (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(100) NOT NULL,
                         dateOfBirth DATE NOT NULL
@@ -25,10 +25,11 @@ module.exports = {
 
     query: {
         getError: 'Get query failed',
+        postError: 'Post query failed',
         insertError: 'Data inserted failed',
         insertSuccess: 'Data inserted successfully',
         invalidJSON: 'Invalid JSON format', 
         noData: 'Patients data must be an array with at least one patient',
-        insertQuery: 'INSERT INTO patients (name, dateOfBirth) VALUES',
+        insertQuery: 'INSERT INTO Patients (name, dateOfBirth) VALUES',
     }
 };
