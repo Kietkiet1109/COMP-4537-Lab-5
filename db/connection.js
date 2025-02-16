@@ -1,11 +1,13 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-    host: 'lab5-do-user-18795572-0.l.db.ondigitalocean.com',
-    user: "doadmin",
-    password: "AVNS_kNzd4GNmLiuIHPAcw9F",
-    database: "defaultdb",
-    port: 25060,
+    host: '34.173.164.211',
+    user: "root",
+    password: "kiet",
+    database: "lab5",
+    port: 3306,
+    multipleStatements: false,
+    connectTimeout: 15000
 });
 
 connection.connect(function(err) {
