@@ -16,22 +16,10 @@ const PORT = 8080;
 const server = http.createServer((req, res) => {
 
     // Set CORS headers
-    if (req.method === 'OPTIONS') {
-        const allowedOrigins = ["https://comp4537labs5.netlify.app", "https://comp4537labs5.netlify.app/index.html"];
- 
-        // Enable CORS for specific origins
-        app.use(cors({
-            origin: function (origin, callback) {
-                if (!origin || allowedOrigins.includes(origin)) {
-                    callback(null, true);
-                } else {
-                    callback(new Error('Not allowed by CORS'));
-                }
-            }
-        }));
-        res.writeHead(204);
-        return res.end();
-    }
+    res.setHeader('Access-Control-Allow-Origin', '*' );
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     // Execute button
     if (req.method === 'GET' && req.url.startsWith('/api/v1/sql/')) {
