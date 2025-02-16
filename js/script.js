@@ -25,7 +25,7 @@ async function insert() {
  * Function to execute SELECT queries from the textarea
  */
 async function execute() {
-    const query = sqlQuery.value.trim();
+    const query = sqlQuery.value;
 
     if (!query) {
         result.innerHTML = `<strong>${messages.SQLEmpty}</strong>`;
@@ -33,12 +33,6 @@ async function execute() {
     }
 
     try {
-        // Ensure only SELECT queries are allowed
-        if (!query.toUpperCase().startsWith('SELECT')) {
-            result.innerHTML = `<strong>${messages.error}: Only SELECT queries are allowed!</strong>`;
-            return;
-        }
-
         // API URL for GET request to fetch data
         const apiUrl = 'https://comp-4537-labs-5-tb866.ondigitalocean.app/COMP4537/labs/5/api/v1/sql/' + encodeURIComponent(query);
 
