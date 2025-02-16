@@ -66,7 +66,7 @@ function handlePostRequest(req, res) {
             res.end(JSON.stringify({ error: 'Invalid JSON' }));
             return;
         }
-        
+
         const pathname = parsedUrl.pathname.replace(/\/$/, '');
 
         if (pathname !== '/api/v1/insert') {
@@ -74,15 +74,27 @@ function handlePostRequest(req, res) {
             res.end(JSON.stringify({ error: 'Endpoint not found' }));
             return;
         }
-        
-        const { query } = requestData;
-        
-        // Only allow INSERT queries
-        if (!query || !query.toUpperCase().startsWith('INSERT')) {
+
+        // Fetch the array of patients from the request data
+        const { patients } = requestData;
+
+        // Check if the data is an array and contains at least one patient
+        if (!Array.isArray(patients) || patients.length === 0) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Only INSERT queries are allowed via POST' }));
+            res.end(JSON.stringify({ error: 'Patients data must be an array with at least one patient' }));
             return;
         }
+
+        // Generate the SQL insert statement for multiple rows
+        const values = patients.map(patient => {
+            // Escape strings to prevent SQL injection
+            const name = connection.escape(patient.name);
+            const dateOfBirth = connection.escape(patient.dateOfBirth);
+            return `(${name}, ${dateOfBirth})`;
+        }).join(', ');
+
+        // Construct the SQL query to insert multiple rows at once
+        const query = `INSERT INTO patients (name, date_of_birth) VALUES ${values}`;
 
         // Block dangerous SQL commands
         if (!isValidQuery(query)) {
