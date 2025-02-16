@@ -58,6 +58,12 @@ function handleButtonRequest(req, res) {
     const parsedUrl = url.parse(req.url, true);
     let body = '';
 
+    // Create the database if it doesn’t exist
+    connection.query(messages.database.createDatabase, (err) => {
+        if (err) throw err;
+        console.log(messages.database.databaseReady);
+    });
+
     // Gather data from the request
     req.on('data', chunk => {
         body += chunk.toString();
@@ -99,12 +105,6 @@ function handleButtonRequest(req, res) {
             const dateOfBirth = connection.escape(patient.dateOfBirth);
             return `(${name}, ${dateOfBirth})`;  // Format each patient as a row
         }).join(', ');  // Join all the rows with commas
-
-        // Create the database if it doesn’t exist
-        connection.query(messages.database.createDatabase, (err) => {
-            if (err) throw err;
-            console.log(messages.database.databaseReady);
-        });
         
         // Construct the SQL query to insert multiple rows at once
         const query = `${messages.query.insertQuery} ${values}`;
